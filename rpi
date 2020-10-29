@@ -39,6 +39,7 @@ sudo npm install -g node-red-admin
 sudo npm install node-red-dashboard
 sudo npm install node-red-contrib-arp
 sudo npm install node-red-contrib-browser-utils
+sudo npm install node-red-contrib-safe-queue
 #sudo npm install node-red-contrib-socketcan
 sudo npm install red-contrib-socketcan
 sudo sed -i -e "\$adtparam=spi=on" /boot/config.txt
@@ -97,3 +98,5 @@ if [ "$askssl" = y ] ; then
 else
   echo "not configured nginx SSL"
 fi
+
+sudo node-red-stop
