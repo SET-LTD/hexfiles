@@ -100,3 +100,14 @@ else
 fi
 
 sudo node-red-stop
+
+
+#cd /home/pi/.node-red/
+#sudo nano settings.js
+
+#editorTheme: {
+#        projects: {
+#            // To enable the Projects feature, set this value to true
+#            enabled: false
+#        }
+#    }
