@@ -45,6 +45,8 @@ sudo npm install red-contrib-socketcan
 sudo sed -i -e "\$adtparam=spi=on" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=spi-bcm2835-overlay" /boot/config.txt
+echo "Fixing usb not working cm4 hub      ";
+
 sudo sed -i -e "dtoverlay=dwc2,dr_mode=host" /boot/config.txt
 
 sudo systemctl enable nodered.service
