@@ -66,6 +66,19 @@ sudo chmod +x /home/pi/cron_can.sh
 sudo crontab -l | { cat; echo "@reboot /home/pi/cron_can.sh"; } | crontab
 
 sudo apt-get install can-utils
+sudo apt-get install putty-tools
+
+cd
+mkdir ~/.ssh
+cd .ssh
+
+ssh-keygen -f id_rsa -N ""
+#generate keys no passfrase
+cat id_rsa.pub >> authorized_keys
+#activate key
+#use private key to login
+cd
+
 sudo apt install build-essential git -y
 bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
 cd /home/pi/.node-red/
