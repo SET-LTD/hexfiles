@@ -76,7 +76,10 @@ ssh-keygen -f id_rsa -N ""
 #generate keys no passfrase
 cat id_rsa.pub >> authorized_keys
 #activate key
+puttygen id_rsa -o id_rsa.ppk
+#convert key file to putty format
 #use private key to login
+
 cd
 
 sudo apt install build-essential git -y
