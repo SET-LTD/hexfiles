@@ -28,13 +28,17 @@ echo "Starting Jakubs Script to install all software from clean image      ";
 read -p "Do you wish to auto configure SSL?  Input y/n and hit enter: " askssl
 read -p "Do you wish to auto configure static?  Input y/n and hit enter: " staticxxx
 
+
 if [ "$staticxxx" = y ] ; then
 
 read -p "What static ip adress would you like?  Input example 192.168.0.99 and hit enter: " dhcp_static_client
 read -p "What is the adress of the gateway?  Input example 192.168.0.1 and hit enter: " dhcp_static_gateway
 
 read -p "Do you wish to auto configure ethernet or wifi?  Input e/w and hit enter: " staticyyy
-
+read -p "Do you wish to configure x509?  Input y/n and hit enter: " staticx509
+     if [ "$staticx509" = y ] ; then
+     else
+     fi
  if [ "$staticy" = w ] ; then
 
  #download wifi template
@@ -98,6 +102,10 @@ sudo npm install node-red-contrib-browser-utils
 sudo npm install node-red-contrib-safe-queue
 #sudo npm install node-red-contrib-socketcan
 sudo npm install red-contrib-socketcan
+mkdir /home/pi/.node-red/nodecerts
+cd /home/pi/.node-red/nodecerts
+
+
 sudo sed -i -e "\$adtparam=spi=on" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=spi-bcm2835-overlay" /boot/config.txt
