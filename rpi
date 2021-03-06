@@ -85,7 +85,10 @@ puttygen id_rsa -o id_rsa.ppk
 cd
 
 sudo apt install build-essential git -y
-bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
+bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)<<EOF
+y
+y
+EOF
 cd /home/pi/.node-red/
 sudo npm install -g node-red-admin
 sudo npm install node-red-dashboard
