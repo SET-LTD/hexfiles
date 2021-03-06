@@ -45,15 +45,15 @@ if [ "$staticxxx" = y ] ; then
 #          sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
 #     else
 #     fi
-     if [ "$staticyyy" = w ] ; then
-          #download wifi template
-          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_wlan -P /etc/
-          sudo mv /etc/my_wget_dhcp_wlan /etc/dhcpcd.conf
-     else
-          #download ethernet template
-          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_eth -P /etc/
-          sudo mv /etc/my_wget_dhcp_eth /etc/dhcpcd.conf     
-     fi
+#     if [ "$staticyyy" = w ] ; then
+#          #download wifi template
+#          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_wlan -P /etc/
+#          sudo mv /etc/my_wget_dhcp_wlan /etc/dhcpcd.conf
+#     else
+#          #download ethernet template
+#          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_eth -P /etc/
+#          sudo mv /etc/my_wget_dhcp_eth /etc/dhcpcd.conf     
+#     fi
  
      #configure settings here
      sudo sed -i "s/kkk/${dhcp_static_client}/g" /etc/dhcpcd.conf
