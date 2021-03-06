@@ -44,7 +44,7 @@ if [ "$staticxxx" = y ] ; then
           sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/settings.js_x509 -P /home/pi/.node-red/
           rm settings.js
           sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
-     else
+          else
      fi
      
      if [ "$staticy" = w ] ; then
