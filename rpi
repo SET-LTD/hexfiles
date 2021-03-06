@@ -28,7 +28,7 @@ echo "Starting Jakubs Script to install all software from clean image      ";
 read -p "Do you wish to auto configure SSL?  Input y/n and hit enter: " askssl
 read -p "Do you wish to auto configure static?  Input y/n and hit enter: " staticxxx
 
-$static_interface =lol 
+static_interface =lol 
 if [ "$staticxxx" = y ] ; then
      read -p "What static ip adress would you like?  Input example 192.168.0.99 and hit enter: " dhcp_static_client
      read -p "What is the adress of the gateway?  Input example 192.168.0.1 and hit enter: " dhcp_static_gateway
