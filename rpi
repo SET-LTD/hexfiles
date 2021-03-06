@@ -29,6 +29,7 @@ read -p "Do you wish to auto configure SSL?  Input y/n and hit enter: " askssl
 read -p "Do you wish to auto configure static?  Input y/n and hit enter: " staticxxx
 
 if [ "$staticxxx" = y ]  then
+     echo "Asking user input"
      read -p "What static ip adress would you like?  Input example 192.168.0.99 and hit enter: " dhcp_static_client
      read -p "What is the adress of the gateway?  Input example 192.168.0.1 and hit enter: " dhcp_static_gateway
 
@@ -44,6 +45,7 @@ if [ "$staticxxx" = y ]  then
           sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
      else
           #nothing
+          echo "not configuring settings.js"
      fi
      
      if [ "$static_interface" = w ]  then
