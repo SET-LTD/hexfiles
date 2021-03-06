@@ -37,6 +37,7 @@ if [ "$staticxxx" = y ]  then
      read -p "Do you wish to configure x509?  Input y/n and hit enter: " staticx509
      
      if [ "$staticx509" = y ]  then
+          echo "downloading settings.js"
           #update the node-red settings.js
           #wget
           #restart will be required
