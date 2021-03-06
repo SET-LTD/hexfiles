@@ -37,6 +37,9 @@ read -p "What is the adress of the gateway?  Input example 192.168.0.1 and hit e
 read -p "Do you wish to auto configure ethernet or wifi?  Input e/w and hit enter: " staticyyy
 read -p "Do you wish to configure x509?  Input y/n and hit enter: " staticx509
      if [ "$staticx509" = y ] ; then
+     #update the node-red settings.js
+     #wget
+     #restart will be required
      else
      fi
  if [ "$staticy" = w ] ; then
@@ -103,7 +106,24 @@ sudo npm install node-red-contrib-safe-queue
 #sudo npm install node-red-contrib-socketcan
 sudo npm install red-contrib-socketcan
 mkdir /home/pi/.node-red/nodecerts
+
 cd /home/pi/.node-red/nodecerts
+openssl genrsa -out privatekey.pem 2048 
+#next command needs fillin out
+openssl req -new -key privatekey.pem -out private-csr.pem<<EOF
+GB
+Derbyshire
+Derby
+SET
+HQ
+192.168.0.200
+jakubwton@aol.com
+Test123
+SET
+EOF
+
+openssl x509 -req -days 3560 -in private-csr.pem -signkey privatekey.pem -out certificate.pem
+openssl x509 -outform der -in certificate.pem -out certificate.crt
 
 
 sudo sed -i -e "\$adtparam=spi=on" /boot/config.txt
