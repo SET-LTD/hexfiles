@@ -36,18 +36,7 @@ if [ "$staticxxx" = y ];  then
      read -p "Do you wish to auto configure ethernet or wifi?  Input e/w and hit enter: " static_interface
      read -p "Do you wish to configure x509?  Input y/n and hit enter: " staticx509
      
-     if [ "$staticx509" = y ];  then
-          echo "downloading settings.js"
-          #update the node-red settings.js
-          #wget
-          #restart will be required
-          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/settings.js_x509 -P /home/pi/.node-red/
-          rm settings.js
-          sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
-          echo "downloading settings.js"
-     else
-          echo "not configuring settings.js"
-     fi
+
      echo "XXXX"
      if [ "$static_interface" = w ];  then
           echo "download wifi template"
@@ -124,6 +113,20 @@ EOF
 
 openssl x509 -req -days 3560 -in private-csr.pem -signkey privatekey.pem -out certificate.pem
 openssl x509 -outform der -in certificate.pem -out certificate.crt
+
+     if [ "$staticx509" = y ];  then
+          echo "downloading settings.js"
+          #update the node-red settings.js
+          #wget
+          #restart will be required
+          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/settings.js_x509 -P /home/pi/.node-red/
+          rm settings.js
+          sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
+          echo "downloading settings.js"
+     else
+          echo "not configuring settings.js"
+     fi
+
 
 
 sudo sed -i -e "\$adtparam=spi=on" /boot/config.txt
