@@ -36,15 +36,15 @@ if [ "$staticxxx" = y ] ; then
      read -p "Do you wish to auto configure ethernet or wifi?  Input e/w and hit enter: " staticyyy
      read -p "Do you wish to configure x509?  Input y/n and hit enter: " staticx509
      
-     if [ "$staticx509" = y ] ; then
-          #update the node-red settings.js
-          #wget
-          #restart will be required
-          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/settings.js_x509 -P /home/pi/.node-red/
-          rm settings.js
-          sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
-     else
-     fi
+#     if [ "$staticx509" = y ] ; then
+#          #update the node-red settings.js
+#          #wget
+#          #restart will be required
+#          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/settings.js_x509 -P /home/pi/.node-red/
+#          rm settings.js
+#          sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
+#     else
+#     fi
      if [ "$staticyyy" = w ] ; then
           #download wifi template
           sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_wlan -P /etc/
