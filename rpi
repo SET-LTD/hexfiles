@@ -122,6 +122,7 @@ openssl x509 -outform der -in certificate.pem -out certificate.crt
           #update the node-red settings.js
           #wget
           #restart will be required
+          cd /home/pi/.node-red/
           sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/settings.js_x509 -P /home/pi/.node-red/
           rm settings.js
           sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
@@ -154,7 +155,7 @@ cd /home/pi
 rm -rf temp
 cd /home/pi/cliflash
 make
-cd /home/pil
+cd /home/pi
 sed -i -e  "\$aPATH=\$PATH:/home/pi/cliflash"  .bashrc
 sudo wget https://www.pjrc.com/teensy/49-teensy.rules -P /etc/udev/rules.d
 
