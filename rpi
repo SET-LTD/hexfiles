@@ -40,6 +40,9 @@ read -p "Do you wish to configure x509?  Input y/n and hit enter: " staticx509
      #update the node-red settings.js
      #wget
      #restart will be required
+     sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/settings.jsx509 -P /etc/
+     rm settings.js
+     sudo mv /home/pi/.node-red/settings.jsx509 /home/pi/.node-red/settings.js
      else
      fi
  if [ "$staticy" = w ] ; then
