@@ -28,12 +28,12 @@ echo "Starting Jakubs Script to install all software from clean image      ";
 read -p "Do you wish to auto configure SSL?  Input y/n and hit enter: " askssl
 read -p "Do you wish to auto configure static?  Input y/n and hit enter: " staticxxx
 
-
+$static_interface =lol 
 if [ "$staticxxx" = y ] ; then
      read -p "What static ip adress would you like?  Input example 192.168.0.99 and hit enter: " dhcp_static_client
      read -p "What is the adress of the gateway?  Input example 192.168.0.1 and hit enter: " dhcp_static_gateway
 
-     read -p "Do you wish to auto configure ethernet or wifi?  Input e/w and hit enter: " kakax
+     read -p "Do you wish to auto configure ethernet or wifi?  Input e/w and hit enter: " static_interface
      read -p "Do you wish to configure x509?  Input y/n and hit enter: " staticx509
      
      if [ "$staticx509" = y ] ; then
@@ -45,14 +45,14 @@ if [ "$staticxxx" = y ] ; then
           sudo mv /home/pi/.node-red/settings.js_x509 /home/pi/.node-red/settings.js
      else
      fi
-     if [ "$kakax" = w ] ; then
-#          #download wifi template
-#          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_wlan -P /etc/
-#          sudo mv /etc/my_wget_dhcp_wlan /etc/dhcpcd.conf
+     if [ "$static_interface" = w ] ; then
+          #download wifi template
+          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_wlan -P /etc/
+          sudo mv /etc/my_wget_dhcp_wlan /etc/dhcpcd.conf
      else
           #download ethernet template
-#          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_eth -P /etc/
-#          sudo mv /etc/my_wget_dhcp_eth /etc/dhcpcd.conf     
+          sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/my_wget_dhcp_eth -P /etc/
+          sudo mv /etc/my_wget_dhcp_eth /etc/dhcpcd.conf     
      fi
  
      #configure settings here
