@@ -136,6 +136,9 @@ openssl x509 -outform der -in certificate.pem -out certificate.crt
 sudo sed -i -e "\$adtparam=spi=on" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=spi-bcm2835-overlay" /boot/config.txt
+sudo sed -i -e "\$adtoverlay=spi-dma" /boot/config.txt
+sudo sed -i -e "\$adtparam=i2c_vc=on" /boot/config.txt
+sudo sed -i -e "\$adtoverlay=i2c-rtc,pcf85063a,i2c_csi_dsi" /boot/config.txt
 echo "Fixing usb not working cm4 hub      ";
 
 sudo sed -i -e "dtoverlay=dwc2,dr_mode=host" /boot/config.txt
