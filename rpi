@@ -63,6 +63,10 @@ sudo crontab -l | { cat; echo "@reboot /home/pi/cron_can.sh > /dev/null"; } | cr
 
 sudo apt-get install can-utils
 sudo apt-get install putty-tools
+sudo apt-get install screen
+sudo apt-get install libffcall-dev
+sudo apt-get install ntp
+sudo apt-get install libssl-dev
 
 cd
 mkdir ~/.ssh
