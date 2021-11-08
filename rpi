@@ -59,7 +59,7 @@ fi
 sudo apt-get update
 sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/cron_can.sh -P /home/pi/
 sudo chmod +x /home/pi/cron_can.sh
-sudo crontab -l | { cat; echo "@reboot /home/pi/cron_can.sh"; } | crontab
+sudo crontab -l | { cat; echo "@reboot /home/pi/cron_can.sh > /dev/null"; } | crontab
 
 sudo apt-get install can-utils
 sudo apt-get install putty-tools
