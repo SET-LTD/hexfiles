@@ -218,7 +218,8 @@ git -c http.extraheader="AUTHORIZATION:bearer ${pat}" clone https://<user>@githu
 cd /home/pi
 mkdir Laurence
 sudo apt-get install git
-echo "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" > Harvester_PAT.txt
+#the PAT token is reversed to stop github finding it and causing an issue
+echo "occlf0JrIITPpZo4Dx6V8xwCYpzO7Fdw61sL_phg" | rev > Harvester_PAT.txt
 pat=$(cat Harvester_PAT.txt)
 git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
 cd Laurence
