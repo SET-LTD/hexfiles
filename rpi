@@ -212,3 +212,40 @@ sudo node-red-stop
 #            enabled: false
 #        }
 #    }
+
+git -c http.extraheader="AUTHORIZATION:bearer ${pat}" clone https://<user>@github.com/<organisation>/<repo>.git ./<local_path>
+
+cd /home/pi
+mkdir Laurence
+sudo apt-get install git
+echo "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" > Harvester_PAT.txt
+pat=$(cat Harvester_PAT.txt)
+git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
+cd Laurence
+chmod +x *.sh
+sudo ./compile_all.sh
+otp=$(./get_otp_serial.sh)
+if [ "$otp"==00000000 ] ; then
+	read -p "Do you wish to write the Harvester serial number to OTP?" rep
+	echo    # (optional) move to a new line
+	while [[ $rep =~ ^[Yy]$ ]];
+	do
+		echo "Enter device serial number (32bit hex value, do not enter leading '0x'): "
+		read uid
+		echo "Please enter number again and enter if you are ok to proceed (must match)"
+		read uidd
+		if [[ ! $uid =~ ^[a-f0-9]{8}$ ]]; then
+			echo "Error, you must enter an 8 digit hexidecimal serial number"
+			continue
+		fi
+		if [ "$uid" = "$uidd" ]; then
+			vcmailbox 0x00038021 12 12 1 1 0x$uid
+			break
+		else
+			echo "Error, OTP serial numbers did not match"
+			read -p "Do you still wish to write the Harvester serial number to OTP?" rep
+		fi
+	done
+else
+	echo "OTP is already programmed, (value is 0x${otp})"
+fi
