@@ -243,7 +243,7 @@ echo ""
 echo "To update the installation with the latest code from github at any point, run the script update_install.sh"
 otp=$(./get_otp_serial.sh)
 if [ "$otp"==00000000 ] ; then
-	read -p "Do you wish to write the Harvester serial number to OTP?" rep
+	read -p "Do you wish to write the Harvester serial number to OTP? (enter y/n)" rep
 	echo    # (optional) move to a new line
 	while [[ $rep =~ ^[Yy]$ ]];
 	do
