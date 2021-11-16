@@ -218,13 +218,28 @@ git -c http.extraheader="AUTHORIZATION:bearer ${pat}" clone https://<user>@githu
 cd /home/pi
 mkdir Laurence
 sudo apt-get install git
-#the PAT token is reversed to stop github finding it and causing an issue
-echo "occlf0JrIITPpZo4Dx6V8xwCYpzO7Fdw61sL_phg" | rev > Harvester_PAT.txt
-pat=$(cat Harvester_PAT.txt)
+#the PAT token is encrypted with a secret password to stop hackers finding it on public repo and causing an issue
+#to process a new PAT (generated using developer settings page in your github account)
+#1) write it to a file, e.g. Harvester_PAT.txt (could use nano)
+#2) gpg -c Harvester_PAT.txt
+#3) base64 Harvester_PAT.txt.gpg
+#4) copy output to the line below (within " ")
+echo "jA0ECQMCIF3Ec1GLqQ7o0nEBr2PIOBfxLEhlq0CXOKn4FtB/LDU7WsQPLhzs2OTCRTu/A7Amx8SPLR0PVqLCADHeoKfCQ4f67N14WDnCXndnEgG+K81xFjlGQSB9KJZm/ktiT3lI0WrqRQcTNRkssicuYNyqq4/rkr/hKxPoYyGufQ==" > Harvester.txt
+base64 -d Harvester.txt > Harvester.txt.gpg
+rm Harvester.txt
+pat=$(gpg -d Harvester.txt.gpg)
+rm Harvester.txt.gpg
+echo $pat > Harvester_PAT.txt
 git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
 cd Laurence
 chmod +x *.sh
 sudo ./compile_all.sh
+mv auto_restart_can.sh ../
+mv update_install.sh ../
+echo "Note down the device serial number for reference:"
+cat /sys/firmware/devicetree/base/serial-number
+echo ""
+echo "To update the installation with the latest code from github at any point, run the script update_install.sh"
 otp=$(./get_otp_serial.sh)
 if [ "$otp"==00000000 ] ; then
 	read -p "Do you wish to write the Harvester serial number to OTP?" rep
@@ -250,3 +265,4 @@ if [ "$otp"==00000000 ] ; then
 else
 	echo "OTP is already programmed, (value is 0x${otp})"
 fi
+echo "Harvester configuration is now finished, power cycle or reboot is suggested"
