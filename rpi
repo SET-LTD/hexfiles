@@ -213,7 +213,8 @@ sudo node-red-stop
 #        }
 #    }
 
-git -c http.extraheader="AUTHORIZATION:bearer ${pat}" clone https://<user>@github.com/<organisation>/<repo>.git ./<local_path>
+#this is one documented method, but it doesnt seem to work...
+#git -c http.extraheader="AUTHORIZATION:bearer ${pat}" clone https://<user>@github.com/<organisation>/<repo>.git ./<local_path>
 
 cd /home/pi
 mkdir Laurence
