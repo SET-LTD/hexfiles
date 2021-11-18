@@ -236,8 +236,8 @@ git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
 cd Laurence
 chmod +x *.sh
 sudo ./compile_all.sh
-mv auto_restart_can.sh ../
-mv update_install.sh ../
+cp auto_restart_can.sh ../
+cp update_install.sh ../
 echo "Note down the device serial number for reference:"
 cat /sys/firmware/devicetree/base/serial-number
 echo ""
