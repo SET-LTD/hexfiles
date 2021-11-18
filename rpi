@@ -231,6 +231,7 @@ rm Harvester.txt
 pat=$(gpg -d Harvester.txt.gpg)
 rm Harvester.txt.gpg
 echo $pat > Harvester_PAT.txt
+pat = $(cat Harvester_PAT.txt)
 git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
 cd Laurence
 chmod +x *.sh
