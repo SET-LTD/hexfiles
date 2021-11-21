@@ -223,6 +223,24 @@ service rsyslog restart
 cd /home/pi
 mkdir Laurence
 sudo apt-get install git
+#first of all we should change the default password, this config sets the new password to the same as the first unit 
+#to alter this prompt:
+#1) echo $password > Password.txt
+#2) gpg -c Password.txt (enter the same password as is used for the github twice)
+#3) base64 Password.txt.gpg 
+#4) copy output to line below
+echo "jA0ECQMCyeisno84br3m0koBlXPlV0NX8rZXUKO7fZ6SDp1Q7mR/8axABneJGsRd/TeiOHPG/aU4 S9jkhqXMwebsInXJxYKm4H207oo6zuecAf8GM8MVjBpCKA==" > Password.txt
+base64 -di Password.txt > Password.txt.gpg
+rm Password.txt
+pass=$(gpg -d Password.txt.gpg)
+rm Password.txt.gpg
+echo "You should now enter a new password, suggested password is '${pass}'"
+read -p "(press enter to continue or enter n to leave unchanged)" rep
+if [[ $rep =~ ^[Nn]$ ]]; then
+	echo "leaving the password unchanged"
+else 
+	passwd
+fi
 #the PAT token is encrypted with a secret password to stop hackers finding it on public repo and causing an issue
 #to process a new PAT (generated using developer settings page in your github account)
 #1) write it to a file, e.g. Harvester_PAT.txt (could use nano)
@@ -230,7 +248,7 @@ sudo apt-get install git
 #3) base64 Harvester_PAT.txt.gpg
 #4) copy output to the line below (within " ")
 echo "jA0ECQMCIF3Ec1GLqQ7o0nEBr2PIOBfxLEhlq0CXOKn4FtB/LDU7WsQPLhzs2OTCRTu/A7Amx8SPLR0PVqLCADHeoKfCQ4f67N14WDnCXndnEgG+K81xFjlGQSB9KJZm/ktiT3lI0WrqRQcTNRkssicuYNyqq4/rkr/hKxPoYyGufQ==" > Harvester.txt
-base64 -d Harvester.txt > Harvester.txt.gpg
+base64 -di Harvester.txt > Harvester.txt.gpg
 rm Harvester.txt
 pat=$(gpg -d Harvester.txt.gpg)
 rm Harvester.txt.gpg
