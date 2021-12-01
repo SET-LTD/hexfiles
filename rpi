@@ -258,35 +258,9 @@ git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
 cd Laurence
 chmod +x *.sh
 sudo ./compile_all.sh
+echo "To update the installation with the latest code from github at any point, run the script update_install.sh"
 cp auto_restart_can.sh ../
 cp update_install.sh ../
-echo "Note down the device serial number for reference:"
-cat /sys/firmware/devicetree/base/serial-number
-echo ""
-echo "To update the installation with the latest code from github at any point, run the script update_install.sh"
-otp=$(./get_otp_serial.sh)
-if [ "$otp"==00000000 ] ; then
-	read -p "Do you wish to write the Harvester serial number to OTP? (enter y/n)" rep
-	echo    # (optional) move to a new line
-	while [[ $rep =~ ^[Yy]$ ]];
-	do
-		echo "Enter device serial number (32bit hex value, do not enter leading '0x'): "
-		read uid
-		echo "Please enter number again and enter if you are ok to proceed (must match)"
-		read uidd
-		if [[ ! $uid =~ ^[a-f0-9]{8}$ ]]; then
-			echo "Error, you must enter an 8 digit hexidecimal serial number"
-			continue
-		fi
-		if [ "$uid" = "$uidd" ]; then
-			vcmailbox 0x00038021 12 12 1 1 0x$uid
-			break
-		else
-			echo "Error, OTP serial numbers did not match"
-			read -p "Do you still wish to write the Harvester serial number to OTP?" rep
-		fi
-	done
-else
-	echo "OTP is already programmed, (value is 0x${otp})"
-fi
+cp program_otp.sh ../
+sudo ./program_otp.sh
 echo "Harvester configuration is now finished, power cycle or reboot is suggested"
