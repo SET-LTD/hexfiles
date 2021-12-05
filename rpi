@@ -143,9 +143,10 @@ sudo sed -i -e "\$adtoverlay=spi-bcm2835-overlay" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=spi-dma" /boot/config.txt
 sudo sed -i -e "\$adtparam=i2c_vc=on" /boot/config.txt
 sudo sed -i -e "\$adtoverlay=i2c-rtc,pcf85063a,i2c_csi_dsi" /boot/config.txt
+sudo sed -i -e "\$aenable_tvout=0"
 echo "Fixing usb not working cm4 hub      ";
 
-sudo sed -i -e "dtoverlay=dwc2,dr_mode=host" /boot/config.txt
+sudo sed -i -e "\$adtoverlay=dwc2,dr_mode=host" /boot/config.txt
 
 sudo systemctl enable nodered.service
 
