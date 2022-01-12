@@ -222,6 +222,7 @@ service rsyslog restart
 #git -c http.extraheader="AUTHORIZATION:bearer ${pat}" clone https://<user>@github.com/<organisation>/<repo>.git ./<local_path>
 
 cd /home/pi
+rm -rf Laurence
 mkdir Laurence
 sudo apt-get install git
 #first of all we should change the default password, this config sets the new password to the same as the first unit 
