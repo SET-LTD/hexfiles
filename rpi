@@ -313,7 +313,7 @@ else
 	sudo fatlabel /dev/mmcblk0p1 boot
 	sudo mount /dev/mmcblk0p1 /boot
 	sudo rsync -r boot_backup/ /boot
-	echo -e "1\ny\n1\ny\n" | sudo fsck /dev/mmcblk0p1
+	echo -e "1\ny\n1\ny\n1\n" | sudo fsck /dev/mmcblk0p1
 	sudo parted /dev/mmcblk0 set 1 boot on
 	sudo rm -r ./boot_backup
 	echo -e "p\next2\n401408s\n532479s\nI" | sudo parted /dev/mmcblk0 ---pretend-input-tty mkpart 
