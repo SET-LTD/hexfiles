@@ -225,6 +225,31 @@ cd /home/pi
 rm -rf Laurence
 mkdir Laurence
 sudo apt-get install git
+#the PAT token is encrypted with a secret password to stop hackers finding it on public repo and causing an issue
+#to process a new PAT (generated using developer settings page in your github account) 
+##For the public access PAT
+#1) write it to a file, e.g. Harvester_PAT.txt
+#2) gpg -c Harvester_PAT.txt
+#3) base64 Harvester_PAT.txt.gpg >PAT_pub.txt
+#4) rm Harvester_PAT.txt.gpg
+##For the private access PAT
+#(note that you will need to have the Uhura keys installed before you do this)
+#1) write it to a file, e.g. Harvester_PAT.txt (could use nano)
+#2) gpg --encrypt -r laurence.blaxter@set-gb.com Harvester_PAT.txt
+#3) base64 Harvester_PAT.txt.gpg > PAT.txt
+#4) rm Harvester_PAT.txt.gpg
+#This is also available as a script: "Generate_PATs.sh" in the private repo
+PAT=$(curl -sL https://raw.githubusercontent.com/SET-LTD/hexfiles/master/PAT_pub.txt)
+echo $PAT > PAT_temp.txt
+base64 -di PAT_temp.txt > Harvester_PAT.txt.gpg
+rm PAT_temp.txt
+gpg -d Harvester_PAT.txt.gpg > Harvester_PAT.txt
+rm Harvester_PAT.txt.gpg
+pat=$(cat Harvester_PAT.txt)
+#now clone the private repo
+git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
+
+cd Laurence
 #start by installing the public and private keys (public key is in the repo, private key needs unlocking)
 #the Uhura public and private keys last for >10 years, so once installed, this code shouldnt have to be changed much
 #after using keygen, call  gpg --pinentry-mode loopback --passwd then enter the password once, then blank password twice to disable the password on the private key
@@ -264,6 +289,7 @@ else
 	passwd
 fi
 
+cd ~/
 #The FAT35 partition is mounted as /boot, named/labelled 'boot' and holds kernel images and overlay files, it is 256M in size by default, but only around 50M are usually used
 #By reducing the size by 25% to 192M, 64M are freed, this is enough for 1 week of storage under typical service conditions
 #The raw device can be accessed as /dev/mmcblk0p3, this partition is unformatted, (but set up as ext2 in parted), and is named 'archive' by parted
@@ -297,21 +323,11 @@ else
 	echo "eMMC repartitioning completed"
 fi
 
-#the PAT token is encrypted with a secret password to stop hackers finding it on public repo and causing an issue
-#to process a new PAT (generated using developer settings page in your github account) 
-#(not that you will need to have the Uhura keys installed before you do this)
-#1) write it to a file, e.g. Harvester_PAT.txt (could use nano)
-#2) gpg --encrypt -r laurence.blaxter@set-gb.com Harvester_PAT.txt
-#3) base64 Harvester_PAT.txt.gpg > PAT.txt
-#4) rm Harvester_PAT.txt.gpg
-pat=$(cat Harvester_PAT.txt)
-git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
-cd Laurence
+cd ~/Laurence
+#Now compile and install the code
 chmod +x *.sh
-sudo ./compile_all.sh
+sudo cp update_install.sh ../
 echo "To update the installation with the latest code from github at any point, run the script update_install.sh"
-cp auto_restart_can.sh ../
-cp update_install.sh ../
-cp program_otp.sh ../
+./update_install.sh
 sudo ./program_otp.sh
 echo "Harvester configuration is now finished, power cycle or reboot is suggested"
