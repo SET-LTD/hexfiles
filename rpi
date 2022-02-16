@@ -304,6 +304,7 @@ else
 	echo "Starting repartitioning..."
 	echo "DO NOT DISCONNECT THE POWER UNTIL THIS IS COMPLETED"
 	cd ~/
+	rm -rf boot_backup
 	set -e
 	mkdir boot_backup
 	sudo rsync -r /boot/ ./boot_backup
