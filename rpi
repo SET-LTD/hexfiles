@@ -225,16 +225,36 @@ cd /home/pi
 rm -rf Laurence
 mkdir Laurence
 sudo apt-get install git
+#start by installing the public and private keys (public key is in the repo, private key needs unlocking)
+#the Uhura public and private keys last for >10 years, so once installed, this code shouldnt have to be changed much
+#after using keygen, call  gpg --pinentry-mode loopback --passwd then enter the password once, then blank password twice to disable the password on the private key
+#use gpg --export-secret-keys --armor to export the key files if you ever generate new project keys
+#after generating the public and private keys using gpg, the private key is then encrypted using gpg:
+#1) gpg -c Uhura_private.key (use the standard password)
+#2) base64 Uhura_private.key.gpg > Uhura_private.txt
+#3) rm Uhura_private.key.pgp
+#note that PAT.txt, Uhura_private.txt, and Uhura_public.key are part of the repository, so can be updated, but only PAT.txt should be regularly updated
+#there will also be an encrypted, base64 encoded revocation certificate for the keys on the github repository
+base64 -di Uhura_private.txt > Uhura_private.key.gpg
+gpg -d Uhura_private.key.gpg > Uhura_private.key
+rm Uhura_private.key.gpg
+gpg --import Uhura_private.key
+gpg --import Uhura_public.key
+base64 -di PAT.txt > PAT.txt.gpg
+PAT=$(gpg --decrypt PAT.txt.gpg )
+echo $PAT > Harvester_PAT.txt
+rm PAT.txt.gpg
 #first of all we should change the default password, this config sets the new password to the same as the first unit 
 #to alter this prompt:
 #1) echo $password > Password.txt
-#2) gpg -c Password.txt (enter the same password as is used for the github twice)
+#2) gpg --encrypt -r laurence.blaxter@set-gb.com Password.txt
 #3) base64 Password.txt.gpg 
 #4) copy output to line below
-echo "jA0ECQMCyeisno84br3m0koBlXPlV0NX8rZXUKO7fZ6SDp1Q7mR/8axABneJGsRd/TeiOHPG/aU4 S9jkhqXMwebsInXJxYKm4H207oo6zuecAf8GM8MVjBpCKA==" > Password.txt
+#5) rm Password.txt
+echo "hQGMAxsoKjNjUXblAQwAgNpPWyNAL9R4Fx1xsLkyM1bJgRrVuuEIUFGNuo3epugLUWcdRA4f2LoH6Q+yy1XuoB6wnQZY3HigrQQx3kVi0jzVY4OCl4KLTDyhta21vhYt/nKtC4TBvrLIMOfGAeaQXOCQd6n6oFIsEgHDbEQ3XfxHpOU22ewRsdosA5P6DWtrIivMIr+gTw5BLB07gghKw0DsimE3c3KRmMaj3WZ4Pl9WsUobi9d6chG8VQWZTAkYbKkq2zX2ohtInzENoX674qwNejMajPM+6E2idcZVLUiWrnQ4NyZ1eyFPvvsXQ4KpRbw+TG+zOTcABwE8Cjh+ARDwHFvDcx9G/vCXX7uelVWQXin/eHj2Nu3GOtwjHh0ZCmjzLux2f4DDIoAE+z2oHdks3OeMcNKcehqSAPlXNxnyJinD9CHK5SDbs+a4AKif2b2LktPJw59wgNOq6sUkb0tJIyoZD3j1tofjqO3VvKVzX7Z67uDSZpDJUWS/MKEaotFEnQncePpucZCg9Xo+0lABerBvL1kCGJhb4QZny13mtKY2rbjc4R/ERrn5z4CLOwZ3ZbH28GJ17wwMbuUPBF2Vd4EzDIqmHKZT4Xyt0BKlDqw5hvs616OHswd4NQHX6A==" > Password.txt
 base64 -di Password.txt > Password.txt.gpg
 rm Password.txt
-pass=$(gpg -d Password.txt.gpg)
+pass=$(gpg --decrypt Password.txt.gpg )
 rm Password.txt.gpg
 echo "You should now enter a new password, suggested password is '${pass}'"
 read -p "(press enter to continue or enter n to leave unchanged)" rep
@@ -243,18 +263,47 @@ if [[ $rep =~ ^[Nn]$ ]]; then
 else 
 	passwd
 fi
+
+#The FAT35 partition is mounted as /boot, named/labelled 'boot' and holds kernel images and overlay files, it is 256M in size by default, but only around 50M are usually used
+#By reducing the size by 25% to 192M, 64M are freed, this is enough for 1 week of storage under typical service conditions
+#The raw device can be accessed as /dev/mmcblk0p3, this partition is unformatted, (but set up as ext2 in parted), and is named 'archive' by parted
+#The contents of the /boot partition are temporarily backed up to a folder (boot_backup) whilst these changes are applied.
+#!!! IT IS VERY IMPORTANT THAT THE DEVICE DOES NOT LOSE POWER WHILST THESE CHANGES ARE BEING MADE OR IT WILL BE BRICKED !!!
+echo "Repartitioning the eMMC"
+echo "IT IS VERY IMPORTANT THAT THE DEVICE DOES NOT LOSE POWER WHILST THESE CHANGES ARE BEING MADE OR IT WILL BE BRICKED"
+read -p "(press enter to continue or enter n to skip this step)" rep
+if [[ $rep =~ ^[Nn]$ ]]; then
+	echo "Leaving the eMMC partitions unchanged"
+else 
+	echo "Starting repartitioning..."
+	echo "DO NOT DISCONNECT THE POWER UNTIL THIS IS COMPLETED"
+	cd ~/
+	set -e
+	mkdir boot_backup
+	sudo rsync -r /boot/ ./boot_backup
+	sudo umount /dev/mmcblk0p1
+	echo -e "yes\n" | sudo parted /dev/mmcblk0 ---pretend-input-tty resizepart 1 401407s
+	sudo mkfs.fat -F 32 /dev/mmcblk0p1 196608
+	sudo fatlabel /dev/mmcblk0p1 boot
+	sudo mount /dev/mmcblk0p1 /boot
+	sudo rsync -r boot_backup/ /boot
+	echo -e "1\ny\n1\ny\n" | sudo fsck /dev/mmcblk0p1
+	sudo parted /dev/mmcblk0 set 1 boot on
+	sudo rm -r ./boot_backup
+	echo -e "p\next2\n401408s\n532479s\nI" | sudo parted /dev/mmcblk0 ---pretend-input-tty mkpart 
+	set +e
+	#This will fail of anything that isn't using GPT (stock CM4 used 'msdos' type according to parted), so unset the 'e' option so it continues
+	sudo parted /dev/mmcblk0 name 3 'archive'
+	echo "eMMC repartitioning completed"
+fi
+
 #the PAT token is encrypted with a secret password to stop hackers finding it on public repo and causing an issue
-#to process a new PAT (generated using developer settings page in your github account)
+#to process a new PAT (generated using developer settings page in your github account) 
+#(not that you will need to have the Uhura keys installed before you do this)
 #1) write it to a file, e.g. Harvester_PAT.txt (could use nano)
-#2) gpg -c Harvester_PAT.txt
-#3) base64 Harvester_PAT.txt.gpg
-#4) copy output to the line below (within " ")
-echo "jA0ECQMCIF3Ec1GLqQ7o0nEBr2PIOBfxLEhlq0CXOKn4FtB/LDU7WsQPLhzs2OTCRTu/A7Amx8SPLR0PVqLCADHeoKfCQ4f67N14WDnCXndnEgG+K81xFjlGQSB9KJZm/ktiT3lI0WrqRQcTNRkssicuYNyqq4/rkr/hKxPoYyGufQ==" > Harvester.txt
-base64 -di Harvester.txt > Harvester.txt.gpg
-rm Harvester.txt
-pat=$(gpg -d Harvester.txt.gpg)
-rm Harvester.txt.gpg
-echo $pat > Harvester_PAT.txt
+#2) gpg --encrypt -r laurence.blaxter@set-gb.com Harvester_PAT.txt
+#3) base64 Harvester_PAT.txt.gpg > PAT.txt
+#4) rm Harvester_PAT.txt.gpg
 pat=$(cat Harvester_PAT.txt)
 git clone https://${pat}@github.com/SET-LTD/TfW-Harvester-Repo.git  ./Laurence
 cd Laurence
