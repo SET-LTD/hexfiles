@@ -59,7 +59,7 @@ fi
 sudo apt-get update
 sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/cron_can.sh -P /home/pi/
 sudo chmod +x /home/pi/cron_can.sh
-sudo crontab -l | { cat; echo "@reboot /home/pi/cron_can.sh > /dev/null"; } | crontab
+sudo crontab -l | { cat; echo "@reboot /home/pi/cron_can.sh > /dev/null"; } | sudo crontab
 
 sudo apt-get install can-utils
 sudo apt-get install putty-tools
@@ -313,7 +313,9 @@ else
 	sudo mkfs.fat -F 32 /dev/mmcblk0p1 196608
 	sudo fatlabel /dev/mmcblk0p1 boot
 	sudo mount /dev/mmcblk0p1 /boot
+	set +e
 	echo -e "1\ny\n1\ny\n1\ny\n1\ny\n" | sudo fsck /dev/mmcblk0p1
+	set -e
 	sudo rsync -r boot_backup/ /boot
 	sudo parted /dev/mmcblk0 set 1 boot on
 	sudo rm -r ./boot_backup
