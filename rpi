@@ -309,11 +309,11 @@ else
 	mkdir boot_backup
 	sudo rsync -r /boot/ ./boot_backup
 	sudo umount /dev/mmcblk0p1
-	echo -e "yes\n" | sudo parted /dev/mmcblk0 ---pretend-input-tty resizepart 1 393216s
+	echo -e "yes\n" | sudo parted /dev/mmcblk0 ---pretend-input-tty resizepart 1 401407s
 	sudo mkfs.fat -F 32 /dev/mmcblk0p1 196608
 	sudo fatlabel /dev/mmcblk0p1 boot
 	sudo mount /dev/mmcblk0p1 /boot
-	echo -e "1\n1\n1\n1\n" | sudo fsck /dev/mmcblk0p1
+	echo -e "1\ny\n1\ny\n1\ny\n1\ny\n" | sudo fsck /dev/mmcblk0p1
 	sudo rsync -r boot_backup/ /boot
 	sudo parted /dev/mmcblk0 set 1 boot on
 	sudo rm -r ./boot_backup
