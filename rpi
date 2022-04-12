@@ -101,7 +101,7 @@ sudo npm install node-red-contrib-arp
 sudo npm install node-red-contrib-browser-utils
 sudo npm install node-red-contrib-safe-queue
 #sudo npm install node-red-contrib-socketcan
-sudo npm install node-red-contrib-socketcan
+sudo npm install red-contrib-socketcan
 mkdir /home/pi/.node-red/nodecerts
 
 cd /home/pi/.node-red/nodecerts
