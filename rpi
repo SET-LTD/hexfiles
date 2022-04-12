@@ -327,12 +327,16 @@ else
 	echo "eMMC repartitioning completed"
 fi
 
-#Patch the eeprom to enable full software shutdown (only Global_En can wake the pi, but this is connected to RTC on the Harvester)
-sudo sed -i -e "CM4_ENABLE_RPI_EEPROM_UPDATE=1" /etc/default/rpi-eeprom-update
-echo -e "[all]\nBOOT_UART=0\nWAKE_ON_GPIO=0\nPOWER_OFF_ON_HALT=1\n\n# Try  SD- > USB PCIe MSD -> USB 2.0 BCM XHCI -> Network ->  Loop\nBOOT_ORDER=0xf2541\n\n" > boot_eeprom.conf
-echo -e "# Set to 0 to prevent bootloader updates from USB/Network boot\n# For remote units EEPROM hardware write protection should be used.\n\nENABLE_SELF_UPDATE=1\n" >> boot_eeprom.conf
-sudo rpi-eeprom-config --apply boot_eeprom.conf
-rm boot_eeprom.conf
+#Patch the eeprom to enable full software shutdown (only Global_En can wake the pi, but this is connected to RTC on the Harvester) - eeprom edit is disabled on CM4 unfortunately
+ver=$(< /sys/firmware/devicetree/base/model )
+isfour=$( echo $ver | grep "Compute Module 4")
+if (( ${#isfour} > 5 )) ; then
+	sudo sed -i -e "CM4_ENABLE_RPI_EEPROM_UPDATE=1" /etc/default/rpi-eeprom-update
+	echo -e "[all]\nBOOT_UART=0\nWAKE_ON_GPIO=0\nPOWER_OFF_ON_HALT=1\n\n# Try  SD- > USB PCIe MSD -> USB 2.0 BCM XHCI -> Network ->  Loop\nBOOT_ORDER=0xf2541\n\n" > boot_eeprom.conf
+	echo -e "# Set to 0 to prevent bootloader updates from USB/Network boot\n# For remote units EEPROM hardware write protection should be used.\n\nENABLE_SELF_UPDATE=1\n" >> boot_eeprom.conf
+	sudo rpi-eeprom-config --apply boot_eeprom.conf
+	rm boot_eeprom.conf
+fi
 
 cd ~/Laurence
 #Now compile and install the code
