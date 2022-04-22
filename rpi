@@ -56,18 +56,18 @@ else
 fi
 
 
-sudo apt-get update
+sudo apt-get update -y
 sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/cron_can.sh -P /home/pi/
 sudo chmod +x /home/pi/cron_can.sh
 sudo crontab -l | grep -v cron_can.sh | { cat; echo "@reboot /home/pi/cron_can.sh > /dev/null"; } | sudo crontab
 
-sudo apt-get install can-utils
-sudo apt-get install putty-tools
-sudo apt-get install screen
-sudo apt-get install libffcall-dev
-sudo apt-get install ntp
-sudo apt-get install libssl-dev
-sudo apt-get install jq
+sudo apt-get install can-utils -y
+sudo apt-get install putty-tools -y
+sudo apt-get install screen -y
+sudo apt-get install libffcall-dev -y
+sudo apt-get install ntp -y
+sudo apt-get install libssl-dev -y
+sudo apt-get install jq -y
 
 cd
 mkdir ~/.ssh
@@ -95,13 +95,13 @@ y
 y
 EOF
 cd /home/pi/.node-red/
-sudo npm install -g node-red-admin
-sudo npm install node-red-dashboard
-sudo npm install node-red-contrib-arp
-sudo npm install node-red-contrib-browser-utils
-sudo npm install node-red-contrib-safe-queue
-#sudo npm install node-red-contrib-socketcan
-sudo npm install red-contrib-socketcan
+sudo npm install -g node-red-admin -y
+sudo npm install node-red-dashboard -y
+sudo npm install node-red-contrib-arp -y
+sudo npm install node-red-contrib-browser-utils -y
+sudo npm install node-red-contrib-safe-queue -y
+#sudo npm install node-red-contrib-socketcan -y
+sudo npm install red-contrib-socketcan -y
 mkdir /home/pi/.node-red/nodecerts
 
 cd /home/pi/.node-red/nodecerts
@@ -156,7 +156,7 @@ rm -rf cliflash
 mkdir temp
 cd temp
 wget https://github.com/PaulStoffregen/teensy_loader_cli/archive/master.zip
-sudo apt-get install libusb-dev
+sudo apt-get install libusb-dev -y
 unzip master.zip
 mv teensy_loader_cli-master cliflash
 mv cliflash  /home/pi
@@ -180,7 +180,7 @@ cd /home/pi
 sudo wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key -P /home/pi
 sudo apt-key add /home/pi/mosquitto-repo.gpg.key
 sudo wget http://repo.mosquitto.org/debian/mosquitto-buster.list -P /etc/apt/sources.list.d
-sudo apt-get update
+sudo apt-get update -y
 #sudo apt-get install mosquitto -y
 if [ "$askssl" = y ] ; then
   sudo rm /etc/mosquitto/mosquitto.conf
@@ -225,7 +225,7 @@ service rsyslog restart
 cd /home/pi
 rm -rf Laurence
 mkdir Laurence
-sudo apt-get install git
+sudo apt-get install git -y
 #the PAT token is encrypted with a secret password to stop hackers finding it on public repo and causing an issue
 #to process a new PAT (generated using developer settings page in your github account) 
 ##For the public access PAT
