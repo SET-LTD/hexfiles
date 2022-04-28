@@ -149,7 +149,7 @@ echo "Fixing usb not working cm4 hub      ";
 
 sudo sed -i -e "\$adtoverlay=dwc2,dr_mode=host" /boot/config.txt
 
-sudo systemctl enable nodered.service
+#sudo systemctl enable nodered.service
 
 cd /home/pi
 rm -rf cliflash
