@@ -149,6 +149,8 @@ echo "Fixing usb not working cm4 hub      ";
 
 sudo sed -i -e "\$adtoverlay=dwc2,dr_mode=host" /boot/config.txt
 
+sudo sed -i -e "\$a\$ETHTOOL --change eth0 advertise 0x00f" /etc/network/if-pre-up.d/ethtool 
+
 #sudo systemctl enable nodered.service
 
 cd /home/pi
