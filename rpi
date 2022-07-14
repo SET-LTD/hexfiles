@@ -67,6 +67,7 @@ sudo apt-get install screen -y
 sudo apt-get install libffcall-dev -y
 sudo apt-get install ntp -y
 sudo apt-get install iptables -y
+sudo apt-get install socat -y
 sudo apt-get install libssl-dev -y
 sudo apt-get install jq -y
 
