@@ -208,6 +208,13 @@ fi
 
 sudo node-red-stop
 
+#install nscd, this should reduce the amount of network traffic on the train, but there are some particulars: it needs to be configured to avoid logging to file to avoid excess writes,
+sudo apt-get install nscd
+#increase negative retry interval to 10minutes, disable persistence to save emmc from excess writes
+sudo sed -i -E "s/([[:space:]]*negative-time-to-live[[:space:]]+[[:alnum:]]+[[:space:]]+)[[:digit:]]+/\1600/g" /etc/nscd.conf
+sudo sed -i -E "s/([[:space:]]*persistent[[:space:]]+[[:alnum:]]+[[:space:]]+)[[:alnum:]]+/\1no/g" /etc/nscd.conf
+sudo service nscd restart
+
 #turn off auth logging
 line=$(grep -n -1 "/var/log/auth.log" /etc/rsyslog.conf | head -1 | cut -d "-"  -f 1)
 sudo sed -e ''"${line}"'i:msg, contains, "TTY=" stop' -i /etc/rsyslog.conf
