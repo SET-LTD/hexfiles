@@ -219,7 +219,7 @@ sudo service nscd restart
 line=$(grep -n -1 "/var/log/auth.log" /etc/rsyslog.conf | head -1 | cut -d "-"  -f 1)
 sudo sed -e ''"${line}"'i:msg, contains, "TTY=" stop' -i /etc/rsyslog.conf
 sudo sed -e ''"${line}"'i:msg, contains, "pam_unix" stop' -i /etc/rsyslog.conf
-service rsyslog restart
+sudo service rsyslog restart
 #cd /home/pi/.node-red/
 #sudo nano settings.js
 
