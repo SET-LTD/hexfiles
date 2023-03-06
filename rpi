@@ -227,6 +227,7 @@ sudo service rsyslog restart
 sudo sed -i -e "\$aStorage=volatile" /etc/systemd/journald.conf
 sudo sed -i -e "\$aSystemMaxUse=10M" /etc/systemd/journald.conf
 sudo sed -i -e "\$aSystemKeepFree=100M" /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald.service
 
 #editorTheme: {
 #        projects: {
