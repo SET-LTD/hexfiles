@@ -229,6 +229,13 @@ sudo sed -i -e "\$aSystemMaxUse=10M" /etc/systemd/journald.conf
 sudo sed -i -e "\$aSystemKeepFree=100M" /etc/systemd/journald.conf
 sudo systemctl restart systemd-journald.service
 
+#disable pam_unix journal logging
+sudo sed -i '1 a session [success=1 default=ignore] pam_unix.so quiet' /etc/pam.d/common-session-noninteractive
+#disable sudo logging
+sudo touch /etc/sudoers.d/10_root
+echo 'Defaults:root !logfile, !syslog' | sudo tee -a /etc/sudoers.d/10_root
+sudo sed -i -e "\$aroot ALL=(ALL) NOPASSWD: /bin/ping" /etc/sudoers.d/10_root
+
 #editorTheme: {
 #        projects: {
 #            // To enable the Projects feature, set this value to true
