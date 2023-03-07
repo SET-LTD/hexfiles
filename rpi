@@ -224,8 +224,11 @@ sudo service rsyslog restart
 #sudo nano settings.js
 
 #move journal to ram and limit the size to max 10M or (free ram - 100M)
+sudo sed -i '/Storage=/d' /etc/systemd/journald.conf
 sudo sed -i -e "\$aStorage=volatile" /etc/systemd/journald.conf
+sudo sed -i '/SystemMaxUse=/d' /etc/systemd/journald.conf
 sudo sed -i -e "\$aSystemMaxUse=10M" /etc/systemd/journald.conf
+sudo sed -i '/SystemKeepFree=/d' /etc/systemd/journald.conf
 sudo sed -i -e "\$aSystemKeepFree=100M" /etc/systemd/journald.conf
 sudo systemctl restart systemd-journald.service
 
