@@ -29,11 +29,10 @@ echo "Starting Jakubs Script to install all software from clean image      ";
 
 sudo apt-get update -y
 sudo apt install build-essential git -y
-bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
-#<<EOF
-#y
-#y
-#EOF
+bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)<<EOF
+y
+y
+EOF
 cd /home/pi/.node-red/
 sudo npm install node-red-dashboard -y
 sudo npm install node-red-contrib-safe-queue -y
