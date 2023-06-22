@@ -39,6 +39,8 @@ sudo npm install node-red-contrib-safe-queue -y
 sudo npm install node-red-node-ui-table -y
 sudo npm install node-red-contrib-email-out -y
 sudo npm install node-red-contrib-buffer-parser -y
+sudo npm install node-red-contrib-buffer-parser -y
+sudo npm install node-red-contrib-ui-led -y
 
 #sudo npm install node-red-contrib-socketcan -y
 #sudo npm install red-contrib-socketcan -y
