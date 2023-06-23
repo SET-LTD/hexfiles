@@ -26,6 +26,8 @@ echo "                                                                        ";
 echo "Starting Jakubs Script to install all software from clean image      ";
 
 
+sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/99-Hitachiscannersudev.rules -P /etc/udev/rules.d/
+sudo udevadm control --reload-rules && sudo udevadm trigger
 
 sudo apt-get update -y
 sudo apt install build-essential git -y
