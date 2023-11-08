@@ -272,7 +272,7 @@ PAT=$(curl -sL https://raw.githubusercontent.com/SET-LTD/hexfiles/master/PAT_pub
 echo $PAT > PAT_temp.txt
 base64 -di PAT_temp.txt > Harvester_PAT.txt.gpg
 rm PAT_temp.txt
-gpg -d Harvester_PAT.txt.gpg > Harvester_PAT.txt
+gpg --no-symkey-cache --pinentry-mode=loopback -d Harvester_PAT.txt.gpg > Harvester_PAT.txt
 rm Harvester_PAT.txt.gpg
 pat=$(cat Harvester_PAT.txt)
 #now clone the private repo
