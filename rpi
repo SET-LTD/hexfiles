@@ -290,7 +290,7 @@ cd Laurence
 #note that PAT.txt, Uhura_private.txt, and Uhura_public.key are part of the repository, so can be updated, but only PAT.txt should be regularly updated
 #there will also be an encrypted, base64 encoded revocation certificate for the keys on the github repository
 base64 -di Uhura_private.txt > Uhura_private.key.gpg
-gpg -d Uhura_private.key.gpg > Uhura_private.key
+gpg --no-symkey-cache --pinentry-mode=loopback -d Uhura_private.key.gpg > Uhura_private.key
 rm Uhura_private.key.gpg
 gpg --import Uhura_private.key
 gpg --import Uhura_public.key
@@ -308,7 +308,7 @@ rm PAT.txt.gpg
 echo "hQGMAxsoKjNjUXblAQwAgNpPWyNAL9R4Fx1xsLkyM1bJgRrVuuEIUFGNuo3epugLUWcdRA4f2LoH6Q+yy1XuoB6wnQZY3HigrQQx3kVi0jzVY4OCl4KLTDyhta21vhYt/nKtC4TBvrLIMOfGAeaQXOCQd6n6oFIsEgHDbEQ3XfxHpOU22ewRsdosA5P6DWtrIivMIr+gTw5BLB07gghKw0DsimE3c3KRmMaj3WZ4Pl9WsUobi9d6chG8VQWZTAkYbKkq2zX2ohtInzENoX674qwNejMajPM+6E2idcZVLUiWrnQ4NyZ1eyFPvvsXQ4KpRbw+TG+zOTcABwE8Cjh+ARDwHFvDcx9G/vCXX7uelVWQXin/eHj2Nu3GOtwjHh0ZCmjzLux2f4DDIoAE+z2oHdks3OeMcNKcehqSAPlXNxnyJinD9CHK5SDbs+a4AKif2b2LktPJw59wgNOq6sUkb0tJIyoZD3j1tofjqO3VvKVzX7Z67uDSZpDJUWS/MKEaotFEnQncePpucZCg9Xo+0lABerBvL1kCGJhb4QZny13mtKY2rbjc4R/ERrn5z4CLOwZ3ZbH28GJ17wwMbuUPBF2Vd4EzDIqmHKZT4Xyt0BKlDqw5hvs616OHswd4NQHX6A==" > Password.txt
 base64 -di Password.txt > Password.txt.gpg
 rm Password.txt
-pass=$(gpg --decrypt Password.txt.gpg )
+pass=$(gpg --no-symkey-cache --pinentry-mode=loopback --decrypt Password.txt.gpg )
 rm Password.txt.gpg
 echo "You should now enter a new password, suggested password is '${pass}'"
 read -p "(press enter to continue or enter n to leave unchanged)" rep
