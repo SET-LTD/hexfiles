@@ -1,0 +1,54 @@
+#!/bin/bash
+#start this script by typing: bash <(curl -sL https://raw.githubusercontent.com/SET-LTD/hexfiles/master/rpi_hitachi_local_interface)
+echo "          _____                    _____                _____           ";
+echo "         /\    \                  /\    \              /\    \          ";
+echo "        /::\    \                /::\    \            /::\    \         ";
+echo "       /::::\    \              /::::\    \           \:::\    \        ";
+echo "      /::::::\    \            /::::::\    \           \:::\    \       ";
+echo "     /:::/\:::\    \          /:::/\:::\    \           \:::\    \      ";
+echo "    /:::/__\:::\    \        /:::/__\:::\    \           \:::\    \     ";
+echo "    \:::\   \:::\    \      /::::\   \:::\    \          /::::\    \    ";
+echo "  ___\:::\   \:::\    \    /::::::\   \:::\    \        /::::::\    \   ";
+echo " /\   \:::\   \:::\    \  /:::/\:::\   \:::\    \      /:::/\:::\    \  ";
+echo "/::\   \:::\   \:::\____\/:::/__\:::\   \:::\____\    /:::/  \:::\____\ ";
+echo "\:::\   \:::\   \::/    /\:::\   \:::\   \::/    /   /:::/    \::/    / ";
+echo " \:::\   \:::\   \/____/  \:::\   \:::\   \/____/   /:::/    / \/____/  ";
+echo "  \:::\   \:::\    \       \:::\   \:::\    \      /:::/    /           ";
+echo "   \:::\   \:::\____\       \:::\   \:::\____\    /:::/    /            ";
+echo "    \:::\  /:::/    /        \:::\   \::/    /    \::/    /             ";
+echo "     \:::\/:::/    /          \:::\   \/____/      \/____/              ";
+echo "      \::::::/    /            \:::\    \                               ";
+echo "       \::::/    /              \:::\____\                              ";
+echo "        \::/    /                \::/    /                              ";
+echo "         \/____/                  \/____/                               ";
+echo "                                                                        ";
+
+echo "Starting Jakubs Script to install all software from clean image      ";
+
+sudo hostname scottygui
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt install build-essential git -y
+bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)<<EOF
+y
+y
+EOF
+cd /home/pi/.node-red/
+sudo npm install node-red-dashboard -y
+sudo npm install node-red-contrib-safe-queue -y
+sudo npm install node-red-node-ui-table -y
+sudo npm install node-red-contrib-email-out -y
+sudo npm install node-red-contrib-buffer-parser -y
+sudo npm install node-red-contrib-ui-led -y
+sudo npm install node-red-serial-port -y
+
+#sudo npm install node-red-contrib-socketcan -y
+#sudo npm install node-red-contrib-arp -y
+
+sudo apt-get install moreutils -y
+sudo apt-get install dnsutils -y
+sudo apt-get install git -y
+
+sudo node-red-stop
+sudo systemctl enable nodered.service
+sudo node-red-start
