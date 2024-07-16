@@ -25,6 +25,9 @@ echo "                                                                        ";
 
 echo "Starting Jakubs Script to install all software from clean image      ";
 
+sudo wget https://raw.githubusercontent.com/SET-LTD/hexfiles/master/99-Hitachilocalint.rules -P /etc/udev/rules.d/
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
 sudo hostname scottygui
 sudo apt-get update -y
 sudo apt-get upgrade -y
