@@ -1,0 +1,5 @@
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740",ATTRS{devpath}=="1.3"  SYMLINK+="symlink_serial_tester"
+#SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001",ATTRS{devpath}=="1.3"  SYMLINK+="symlink_serial_tester"
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001",ATTRS{devpath}=="1.4"  SYMLINK+="symlink_serial_gpib"
+
